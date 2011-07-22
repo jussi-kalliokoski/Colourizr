@@ -1,4 +1,5 @@
-<script src="colourizr.js"></script><style>td{text-shadow:1px 1px 0 dimgray;}</style>
+<script src="../colourizr.js"></script><style>body{background-color:#000;width:100%;margin:0;}td{text-shadow:1px 1px 0 dimgray;}tr{opacity:0.3}tr:hover{opacity:1.0}</style>
+<canvas id="canvas" width="100" height="100" style="background-color: #000; width: 100%; margin: 0px; position: fixed; z-index: -1;">Bring on t3h 0ld sk001 sh137</canvas>
 <table><thead><tr><th>Name</th><th>RGB</th><th>HSL</th><th>0x</th><th>HSL2HSL</th><th>&nbsp;</th></tr></thead><tbody>
 <script>
 function writeTD(c, k){
@@ -22,3 +23,58 @@ for (k in Colourizr.namedColors){
 }
 </script>
 </tbody></table>
+<script>
+	
+var palette;
+var fireData;
+var canvas;
+var context;
+var data;
+var i, j, l, r;
+
+function init() {
+	canvas = document.getElementById("canvas");
+	context = canvas.getContext("2d");
+	data = context.getImageData(0, 0, canvas.width, canvas.height);
+	fireData = Array(data.data.length / 4 + canvas.width + canvas.width);
+	
+	for (i = 0; i < fireData.length; i++)
+		fireData[i] = 0;
+	
+	palette = Array(256);
+	for (i = 0; i < palette.length; i++) palette[i] = { r: i, g: i, b: i, a: 255 };
+	for (i = 0; i < 64; i++) {	
+		palette[i] 			= { r: i * 4, g: 0, b: 0, a: 255 };
+		palette[i + 64] 	= { r: 255, g: i * 4, b: 0, a: 255 };
+		palette[i + 128] 	= { r: 255, g: 255, b: i * 4, a: 255 };
+		palette[i + 192] 	= { r: 255, g: 255, b: 255, a: 255 };				
+	}//*/
+	
+	draw();
+}
+	
+function draw() {
+	for (i = fireData.length - canvas.width; i < fireData.length; i++) {
+		fireData[i] = (Math.random() > 0.5) ? 0 : 255;
+	}
+	
+	for (i = 0; i < fireData.length - canvas.width; i++) {
+		l = ((i % canvas.width) == 0) ? 0 : -1;
+		r = ((i % canvas.width) == canvas.width - 1) ? 0 : 1;
+		fireData[i] = Math.round((fireData[i + l] + (fireData[i + canvas.width] * 3) + fireData[i + r]) * .20);
+		if (fireData[i] > 0) fireData[i] -= (((Math.round(i / canvas.width)) % Math.round(canvas.height * 2 / 256)) == 0) ? 1 : 0;
+		//if (fireData[i] > 1) fireData[i] -= 2;
+	}
+	
+	for (i = 0; i < fireData.length - canvas.width - canvas.width; i++) {
+		data.data[i * 4] 		= palette[fireData[i]].r;
+		data.data[i * 4 + 1] 	= palette[fireData[i]].g;
+		data.data[i * 4 + 2] 	= palette[fireData[i]].b;
+		data.data[i * 4 + 3] 	= palette[fireData[i]].a;
+	}
+
+	context.putImageData(data, 0, 0);
+	setTimeout(draw, 1000/30);
+}
+init();
+</script>
