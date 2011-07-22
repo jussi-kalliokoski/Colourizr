@@ -42,13 +42,15 @@ function init() {
 		fireData[i] = 0;
 	
 	palette = Array(256);
-	for (i = 0; i < palette.length; i++) palette[i] = { r: i, g: i, b: i, a: 255 };
-	for (i = 0; i < 64; i++) {	
-		palette[i] 			= { r: i * 4, g: 0, b: 0, a: 255 };
-		palette[i + 64] 	= { r: 255, g: i * 4, b: 0, a: 255 };
-		palette[i + 128] 	= { r: 255, g: 255, b: i * 4, a: 255 };
-		palette[i + 192] 	= { r: 255, g: 255, b: 255, a: 255 };				
-	}//*/
+	if (Math.random() > 0.5)
+		for (i = 0; i < palette.length; i++) palette[i] = { r: i, g: i, b: i, a: 255 };
+	else
+		for (i = 0; i < 64; i++) {	
+			palette[i] 			= { r: i * 4, g: 0, b: 0, a: 255 };
+			palette[i + 64] 	= { r: 255, g: i * 4, b: 0, a: 255 };
+			palette[i + 128] 	= { r: 255, g: 255, b: i * 4, a: 255 };
+			palette[i + 192] 	= { r: 255, g: 255, b: 255, a: 255 };				
+		}
 	
 	draw();
 }
