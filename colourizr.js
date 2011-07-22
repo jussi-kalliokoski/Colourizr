@@ -112,8 +112,6 @@ Colourizr.Hex2RGB = function(hex){
  * @return {Array} An array containing the RGB representation, as integers in that order.
 */
 
-var x;
-
 Colourizr.HSL2RGB = function(h, s, l){
 	/**
 	 * Converts a Hue component of HSL to an RGB component.
@@ -142,7 +140,6 @@ Colourizr.HSL2RGB = function(h, s, l){
 		r = Hue2RGB(m, n, h + 1 / 3);
 		g = Hue2RGB(m, n, h);
 		b = Hue2RGB(m, n, h - 1 / 3);
-	if (!x) console.log(x=!x, h, s, l, r, g, b, m, n);
 	}
 	return [
 		(r * 2.55)|0,
