@@ -45,23 +45,28 @@ function Colourizr(r, g, b, a){
 			if (g[3]){
 				g = r.substr(g.length - 1);
 				g = /\s*([0-9]+)\s*,\s*([0-9]+)\s*,\s*([0-9]+)\s*(,\s*([0-9\.]+))?/.exec(g);
-				color = [
-					Number(g[1]),
-					Number(g[2]),
-					Number(g[3])
-				];
-				alpha = a ? (Number(g[5]) * 255)|0 : alpha;
-				return use();
-			}
+				if (g){
+					color = [
+						Number(g[1]),
+						Number(g[2]),
+						Number(g[3])
+					];
+					alpha = a ? (Number(g[5]) * 255)|0 : alpha;
+					return use();
+				}
 			// If is HSL
-			g = r.substr(g.length - 1);
-			g = /\s*([0-9]+)\s*,\s*([0-9]+)\s*%\s*,\s*([0-9]+)\s*%\s*(,\s*([0-9\.]+))?/.exec(g);
-			color	= Colourizr.HSL2RGB(
-					Number(g[1]),
-					Number(g[2]),
-					Number(g[3]));
-			alpha	= a ? (Number(g[5]) * 255)|0 : alpha;
-			return use();
+			} else if (g[2]) {
+				g = r.substr(g.length - 1);
+				g = /\s*([0-9]+)\s*,\s*([0-9]+)\s*%\s*,\s*([0-9]+)\s*%\s*(,\s*([0-9\.]+))?/.exec(g);
+				if (g){
+					color	= Colourizr.HSL2RGB(
+							Number(g[1]),
+							Number(g[2]),
+							Number(g[3]));
+					alpha	= a ? (Number(g[5]) * 255)|0 : alpha;
+					return use();
+				}
+			}
 		}
 		// Otherwise, try a hex representation
 		color = Colourizr.Hex2RGB(r) || color;
