@@ -1,0 +1,24 @@
+<script src="colourizr.js"></script><style>td{text-shadow:1px 1px 0 dimgray;}</style>
+<table><thead><tr><th>Name</th><th>RGB</th><th>HSL</th><th>0x</th><th>HSL2HSL</th><th>&nbsp;</th></tr></thead><tbody>
+<script>
+function writeTD(c, k){
+	k = k ||c;
+	document.write('<td ' + (/Firefox\/[0-9\.]+/i.exec(navigator.userAgent) ? 'style="background-color:' : 'bgcolor="') + c + '">' + k + '</td>');
+}
+for (k in Colourizr.namedColors){
+	if (Colourizr.namedColors.hasOwnProperty(k)){
+		c	= Colourizr.namedColors[k];
+		color	= new Colourizr(c);
+		document.write('<tr>');
+		writeTD(k);
+		writeTD(color.toRGB());
+		writeTD(c = color.toHSL());
+		writeTD(color);
+		color = new Colourizr(c);
+		writeTD(color.toHSL());
+		writeTD(color.toHSL() === c ? 'green' : 'red', color.toHSL() === c ? '<marquee>Success</marquee>' : '<blink>Feil</blink>');
+		document.write('</tr>');
+	}
+}
+</script>
+</tbody></table>
